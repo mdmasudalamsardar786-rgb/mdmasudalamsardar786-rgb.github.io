@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Masud Alam — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #E8E8E8;
+      --ink: #1A1814;
+      --ink-soft: #6B6760;
+      --accent: #C8A96E;
+      --accent-light: #EDE3D0;
+      --white: #FFFFFF;
+      --line: rgba(26,24,20,0.10);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; background: rgba(232,232,232,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--ink); }
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 0 4rem; padding-top: 6rem; gap: 4rem; }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--accent); }
+    .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards; }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-bio { font-size: 1rem; line-height: 1.8; color: var(--ink-soft); max-width: 400px; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards; }
+    .islamic-card { display: flex; align-items: center; justify-content: space-between; background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.35); border-radius: 6px; padding: 0.9rem 1.2rem; max-width: 340px; text-decoration: none; margin-bottom: 1.5rem; transition: background 0.3s; opacity: 0; animation: fadeUp 0.8s ease 0.55s forwards; }
+    .islamic-card:hover { background: rgba(200,169,110,0.15); }
+    .islamic-card-left { display: flex; align-items: center; gap: 0.7rem; }
+    .islamic-card-icon { font-size: 1.3rem; }
+    .islamic-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--ink); }
+    .islamic-card-sub { font-size: 0.68rem; color: var(--ink-soft); margin-top: 0.1rem; }
+    .islamic-card-tag { font-size: 0.65rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
+    .islamic-card-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease 0.65s forwards; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--ink); color: var(--white); padding: 0.9rem 2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.3s, transform 0.2s; }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--ink); color: var(--ink); padding: 0.9rem 2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; }
+    .btn-outline:hover { background: var(--ink); color: var(--white); transform: translateY(-2px); }
+    .hero-visual { display: flex; justify-content: center; align-items: center; opacity: 0; animation: fadeIn 1s ease 0.8s forwards; }
+    .logo-circle { filter: drop-shadow(0 20px 60px rgba(200,169,110,0.15)); transition: transform 0.4s ease; }
+    .logo-circle:hover { transform: rotate(5deg) scale(1.03); }
+    section { padding: 6rem 4rem; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+    .section-label::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--accent); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 3rem; }
+    #about { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1100px; margin: 0 auto; }
+    .about-quote { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-style: italic; font-weight: 300; line-height: 1.6; color: var(--ink); border-left: 2px solid var(--accent); padding-left: 2rem; margin-bottom: 2rem; }
+    .about-text { font-size: 1rem; line-height: 1.9; color: var(--ink-soft); }
+    .about-details { display: flex; flex-direction: column; gap: 2rem; }
+    .detail-item { display: flex; flex-direction: column; gap: 0.3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--line); }
+    .detail-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .detail-value { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; color: var(--ink); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .skill-card { background: var(--white); border: 1px solid var(--line); padding: 2rem; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+    .skill-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--accent); transition: height 0.4s ease; }
+    .skill-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,24,20,0.08); }
+    .skill-card:hover::before { height: 100%; }
+    .skill-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .skill-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 0.5rem; }
+    .skill-desc { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; }
+    #poetry { background: var(--ink); color: var(--white); }
+    #poetry .section-label { color: var(--accent); }
+    #poetry .section-label::before { background: var(--accent); }
+    .poetry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
+    .poetry-card { border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; position: relative; transition: border-color 0.3s; }
+    .poetry-card:hover { border-color: var(--accent); }
+    .poetry-number { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; color: rgba(200,169,110,0.15); position: absolute; top: 1rem; right: 1.5rem; line-height: 1; }
+    .poetry-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; margin-bottom: 1.5rem; color: var(--accent); }
+    .poetry-excerpt { font-size: 0.88rem; line-height: 2; color: rgba(255,255,255,0.75); white-space: pre-line; }
+    #contact { background: var(--bg); border-top: 1px solid var(--line); }
+    .contact-inner { max-width: 700px; margin: 0 auto; text-align: center; }
+    .contact-inner .section-label { justify-content: center; }
+    .contact-inner .section-label::before { display: none; }
+    .contact-tagline { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; font-style: italic; line-height: 1.4; margin-bottom: 3rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+    .contact-icon-link { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink-soft); text-decoration: none; transition: all 0.3s; }
+    .contact-icon-link.round { border-radius: 50%; }
+    .contact-icon-link:hover { border-color: var(--accent); color: var(--accent); }
+    footer { text-align: center; padding: 2rem 4rem; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--ink-soft); letter-spacing: 0.05em; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .nav-links a { font-size: 0.7rem; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; text-align: center; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-bio { margin: 0 auto 1.5rem; }
+      .islamic-card { margin: 0 auto 1.5rem; }
+      .hero-actions { justify-content: center; }
+      .hero-visual { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">Masud Alam</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#poetry">Poetry</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Portfolio</p>
+      <h1 class="hero-name">Md Masud<br/><em>Alam Sardar</em></h1>
+      <p class="hero-bio">A science student, a writer, and a quiet dreamer — always trying to be a better version of yesterday's self.</p>
+      <a href="https://mmalam.in/islamiclight" target="_blank" class="islamic-card">
+        <div class="islamic-card-left">
+          <span class="islamic-card-icon">☪️</span>
+          <div>
+            <div class="islamic-card-label">My Islamic Website</div>
+            <div class="islamic-card-name">Islamic Light</div>
+            <div class="islamic-card-sub">Quran · Hadith · Dua · Books</div>
+          </div>
+        </div>
+        <span class="islamic-card-tag">Visit →</span>
+      </a>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Get in Touch ↗</a>
+        <a href="#about" class="btn-outline">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="logo-circle">
+        <svg width="360" height="360" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="340" cy="340" r="300" fill="none" stroke="#C8A96E" stroke-width="1.5" opacity="0.4"/>
+          <circle cx="340" cy="340" r="290" fill="none" stroke="#C8A96E" stroke-width="0.5" opacity="0.3"/>
+          <circle cx="340" cy="340" r="270" fill="#1A1814"/>
+          <circle cx="340" cy="340" r="250" fill="none" stroke="#C8A96E" stroke-width="0.8" opacity="0.5"/>
+          <path id="topArc" d="M 130,340 A 210,210 0 0,1 550,340" fill="none"/>
+          <text font-size="11" fill="#C8A96E" opacity="0.8" letter-spacing="6" font-family="Georgia, serif">
+            <textPath href="#topArc" startOffset="10%">M D  M A S U D  A L A M  S A R D A R</textPath>
+          </text>
+          <path id="bottomArc" d="M 140,360 A 205,205 0 0,0 540,360" fill="none"/>
+          <text font-size="10" fill="#C8A96E" opacity="0.6" letter-spacing="5" font-family="Georgia, serif">
+            <textPath href="#bottomArc" startOffset="12%">P O E T  ·  W R I T E R  ·  S T U D E N T</textPath>
+          </text>
+          <line x1="100" y1="340" x2="175" y2="340" stroke="#C8A96E" stroke-width="0.8" opacity="0.5"/>
+          <line x1="505" y1="340" x2="580" y2="340" stroke="#C8A96E" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="100" cy="340" r="3" fill="#C8A96E" opacity="0.5"/>
+          <circle cx="580" cy="340" r="3" fill="#C8A96E" opacity="0.5"/>
+          <polygon points="340,115 348,123 340,131 332,123" fill="#C8A96E" opacity="0.7"/>
+          <polygon points="340,549 348,557 340,565 332,557" fill="#C8A96E" opacity="0.7"/>
+          <text x="205" y="390" font-size="190" font-weight="700" fill="#C8A96E" font-family="Georgia, serif" opacity="0.95">M</text>
+          <text x="310" y="390" font-size="190" font-weight="700" fill="none" stroke="#C8A96E" stroke-width="1.5" font-family="Georgia, serif" opacity="0.6">A</text>
+          <text x="310" y="390" font-size="190" font-weight="700" fill="#C8A96E" font-family="Georgia, serif" opacity="0.15">A</text>
+          <circle cx="240" cy="180" r="2" fill="#C8A96E" opacity="0.5"/>
+          <circle cx="340" cy="160" r="2" fill="#C8A96E" opacity="0.5"/>
+          <circle cx="440" cy="180" r="2" fill="#C8A96E" opacity="0.5"/>
+          <circle cx="240" cy="500" r="2" fill="#C8A96E" opacity="0.5"/>
+          <circle cx="340" cy="520" r="2" fill="#C8A96E" opacity="0.5"/>
+          <circle cx="440" cy="500" r="2" fill="#C8A96E" opacity="0.5"/>
+          <text x="340" y="435" font-size="13" fill="#C8A96E" opacity="0.5" text-anchor="middle" letter-spacing="4" font-family="Georgia, serif">mmalam.in</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="section-label">About Me</p>
+        <h2 class="section-title">Always learning,<br/><em style="font-style:italic; font-family:'Cormorant Garamond', serif;">always growing</em></h2>
+        <blockquote class="about-quote">"I am trying and doing my best to update myself — a lover of poetry and words."</blockquote>
+        <p class="about-text">I'm Masud, a science student at Taki Government College with a passion for content writing and poetry. I believe in the power of words to connect people and express what the heart cannot speak aloud.</p>
+      </div>
+      <div class="about-details reveal">
+        <div class="detail-item"><span class="detail-label">Currently Studying At</span><span class="detail-value">Taki Government College</span></div>
+        <div class="detail-item"><span class="detail-label">Background</span><span class="detail-value">Science</span></div>
+        <div class="detail-item"><span class="detail-label">Passion</span><span class="detail-value">Poetry & Content Writing</span></div>
+        <div class="detail-item"><span class="detail-label">Philosophy</span><span class="detail-value">Always be better than yesterday</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="reveal" style="max-width:1100px; margin:0 auto;">
+      <p class="section-label">What I Do</p>
+      <h2 class="section-title">Skills &amp; Interests</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal"><div class="skill-icon">✍️</div><h3 class="skill-name">Content Writing</h3><p class="skill-desc">Crafting meaningful words that engage, inform, and inspire readers across different platforms.</p></div>
+      <div class="skill-card reveal"><div class="skill-icon">📜</div><h3 class="skill-name">Poetry</h3><p class="skill-desc">Writing Bengali and English poetry — using rhythm and emotion to tell stories that matter.</p></div>
+      <div class="skill-card reveal"><div class="skill-icon">🔬</div><h3 class="skill-name">Science</h3><p class="skill-desc">Grounded in scientific thinking with a curiosity to understand the world around me.</p></div>
+      <div class="skill-card reveal"><div class="skill-icon">🌱</div><h3 class="skill-name">Self-Growth</h3><p class="skill-desc">Committed to continuous learning and becoming the best version of myself every single day.</p></div>
+    </div>
+  </section>
+
+  <section id="poetry">
+    <div class="reveal" style="max-width:1100px; margin:0 auto 3rem;">
+      <p class="section-label">My Poems</p>
+      <h2 class="section-title" style="color:var(--white);">Words from<br/><em style="font-family:'Cormorant Garamond',serif; font-style:italic;">my heart</em></h2>
+    </div>
+    <div class="poetry-grid">
+      <div class="poetry-card reveal">
+        <span class="poetry-number">01</span>
+        <h3 class="poetry-title">The Wall of Distance</h3>
+        <p class="poetry-excerpt">If the distance were shorter,
+If I could come to you whenever my heart desired,
+How happy I would be
+We would sit together for endless chats,
+Share cups of tea,
+And lose ourselves in stories,
+Laughter echoing between sips and smiles.
+
+But this distance
+It stands like a wall between us,
+A silent pause in our togetherness.
+So I must find a way,
+A way to close the space between us soon,
+Because my heart can't wait much longer
+To be near you again.</p>
+      </div>
+      <div class="poetry-card reveal">
+        <span class="poetry-number">02</span>
+        <h3 class="poetry-title">The Light of Happiness</h3>
+        <p class="poetry-excerpt">It never shouts,
+nor is it a blinding brightness
+silent, calm,
+yet profound.
+In the middle of ordinary days,
+suddenly it can be found
+in a gentle smile,
+in a moment that softly cuts into the heart.
+A ray of light—perhaps bright, perhaps faint,
+yet the search continues every day.
+The fear of losing it,
+a bond drawn by an endless, invisible pull.
+A single drop of light within the darkness
+reminds me
+if you are searching for me,
+begin by searching within yourself.</p>
+      </div>
+      <div class="poetry-card reveal">
+        <span class="poetry-number">03</span>
+        <h3 class="poetry-title">Long Walk</h3>
+        <p class="poetry-excerpt">This path moves forward
+Like the sky that never fades away,
+Silently, it moves on—unceasing,
+Like the unseen flow of air,
+Always striving to reach the destination.
+
+Even if time comes to an end,
+Like the cover of a worn-out book,
+Still, effortlessly I search anew,
+With tireless effort and endless hope,
+For that one true destination.
+
+Through the long road of the past,
+I leave behind moments in silence,
+Following the structure of time,
+As if it gently leads me
+To the purpose of my journey's end.</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:3rem;" class="reveal">
+      <a href="https://www.instagram.com/masud.0908" target="_blank" class="btn-outline" style="color:var(--white); border-color:rgba(255,255,255,0.3);">See More on Instagram ↗</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-inner">
+      <p class="section-label">Let's Connect</p>
+      <p class="contact-tagline">"Let's share ideas,<br/>stories, and words."</p>
+      <div class="contact-links">
+        <a href="mailto:mdmasudalamsardar786@gmail.com" title="Gmail" class="contact-icon-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+        </a>
+        <a href="https://www.instagram.com/masud.0908" target="_blank" title="Instagram" class="contact-icon-link round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.facebook.com/share/1BYW86y4SM/" target="_blank" title="Facebook" class="contact-icon-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Md Masud Alam Sardar &nbsp;·&nbsp; Designed with care</p>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
