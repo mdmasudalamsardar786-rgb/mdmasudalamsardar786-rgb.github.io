@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AD Blood Collection Service | Patient Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --red-dark: #922b21;
+    --red-light: #e74c3c;
+    --blue: #1a3a5c;
+    --blue-mid: #2255880;
+    --blue-light: #2980b9;
+    --accent: #f39c12;
+    --white: #ffffff;
+    --off-white: #f9f6f2;
+    --gray-light: #f0f2f5;
+    --gray: #8d99ae;
+    --border: #dde3ea;
+    --text: #1c2733;
+    --shadow-card: 0 8px 40px rgba(26,58,92,0.13);
+    --shadow-btn: 0 4px 18px rgba(192,57,43,0.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--off-white);
+    min-height: 100vh;
+    color: var(--text);
+  }
+
+  /* ─── HERO HEADER ─── */
+  .hero {
+    background: linear-gradient(145deg, #0d1f35 0%, #1a3a5c 45%, #1e4976 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+  .hero-bg-circle:nth-child(1) { width:350px;height:350px;top:-100px;right:-80px; }
+  .hero-bg-circle:nth-child(2) { width:200px;height:200px;bottom:-60px;left:-40px; }
+  .hero-bg-circle:nth-child(3) { width:120px;height:120px;top:40px;left:30%; background:rgba(192,57,43,0.12); }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(192,57,43,0.18);
+    border: 1px solid rgba(192,57,43,0.4);
+    color: #ffb3b3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  .badge-dot { width:6px;height:6px;background:#ff6b6b;border-radius:50%;animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.3);} }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .logo-icon {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, var(--red-dark), var(--red-light));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 20px rgba(192,57,43,0.5);
+    flex-shrink: 0;
+  }
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2.4rem);
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .logo-text h1 span { color: var(--red-light); }
+  .hero-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.88rem;
+    font-weight: 400;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-tagline {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.9rem;
+    margin-top: 14px;
+    line-height: 1.6;
+    max-width: 440px;
+  }
+
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .hero-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.75);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px 48px;
+  }
+
+  /* ─── FORM CARD ─── */
+  .form-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: var(--shadow-card);
+    padding: 36px 32px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 5;
+  }
+
+  @media (min-width: 700px) {
+    .form-card { padding: 48px 52px; }
+  }
+
+  /* ─── TWO COLUMN ON DESKTOP ─── */
+  @media (min-width: 700px) {
+    .form-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-full { grid-column: 1 / -1; }
+  }
+
+  /* ─── SECTION LABEL ─── */
+  .sec-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .sec-label::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: linear-gradient(to bottom, var(--red), var(--red-light));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+  /* ─── FIELDS ─── */
+  .field { margin-bottom: 0; }
+
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #3d4f61;
+    margin-bottom: 7px;
+    letter-spacing: 0.01em;
+  }
+  .field label .req { color: var(--red); }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--gray-light);
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+  }
+  input:focus {
+    border-color: var(--blue-light);
+    box-shadow: 0 0 0 3.5px rgba(41,128,185,0.12);
+    background: #fff;
+  }
+  input::placeholder { color: #b0bec8; font-size: 0.88rem; }
+
+  /* ─── GENDER ─── */
+  .gender-row {
+    display: flex;
+    gap: 10px;
+  }
+  .gender-btn {
+    flex: 1;
+    padding: 11px 6px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--gray-light);
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray);
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .gender-btn:hover { border-color: #aab4be; }
+  .gender-btn.active {
+    border-color: var(--blue-light);
+    background: rgba(41,128,185,0.1);
+    color: var(--blue);
+  }
+
+  /* ─── LOCATION ─── */
+  .location-box {
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .loc-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #1a3a5c, #2980b9);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .loc-text { flex: 1; }
+  .loc-text p {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .loc-text small {
+    font-size: 0.72rem;
+    color: var(--gray);
+    line-height: 1.4;
+  }
+  .loc-btn {
+    padding: 8px 14px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+  .loc-btn:hover { opacity: 0.88; }
+  .loc-btn.got { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+  #loc-status {
+    font-size: 0.75rem;
+    margin-top: 6px;
+    color: var(--gray);
+  }
+  #loc-status.ok { color: #27ae60; font-weight: 600; }
+  #loc-status.fail { color: var(--red); }
+
+  /* ─── TESTS GRID ─── */
+  .tests-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  @media (min-width: 600px) {
+    .tests-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  .test-chip {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--gray-light);
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #4a5568;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .test-chip:hover { border-color: #aab4be; background: #eaecef; }
+  .test-chip input[type="checkbox"] { display: none; }
+  .chk-box {
+    width: 19px; height: 19px;
+    border: 2px solid #c8d0db;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    background: #fff;
+  }
+  .test-chip.selected {
+    border-color: var(--red);
+    background: rgba(192,57,43,0.06);
+    color: var(--red-dark);
+  }
+  .test-chip.selected .chk-box {
+    background: var(--red);
+    border-color: var(--red);
+  }
+  .test-chip.selected .chk-box::after {
+    content: '✓';
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .test-chip.full-row { grid-column: 1 / -1; }
+
+  /* ─── ERROR ─── */
+  .err {
+    color: var(--red);
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 5px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+  .err.show { display: flex; }
+
+  /* ─── SUBMIT BTN ─── */
+  .submit-wrap { margin-top: 28px; }
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--red-dark) 0%, var(--red-light) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+    box-shadow: var(--shadow-btn);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .submit-btn:hover { opacity: 0.93; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(192,57,43,0.45); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn .wa-icon { width: 22px; height: 22px; fill: #fff; }
+
+  /* ─── INFO STRIP ─── */
+  .info-strip {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .info-item {
+    background: var(--gray-light);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .info-item .ii-icon { font-size: 1.5rem; margin-bottom: 6px; }
+  .info-item .ii-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .info-item .ii-val {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  /* ─── MODAL ─── */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(10,20,35,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .overlay.show { display: flex; animation: fadeIn 0.25s; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  .modal {
+    background: #fff;
+    border-radius: 24px;
+    padding: 36px 28px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    animation: slideUp 0.3s;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+  @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  .modal-check {
+    width: 70px; height: 70px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 18px;
+    box-shadow: 0 6px 20px rgba(39,174,96,0.35);
+  }
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text);
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+  .modal p {
+    color: var(--gray);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .wa-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #128C7E, #25D366);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 4px 18px rgba(37,211,102,0.35);
+  }
+  .wa-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .wa-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+  .new-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    background: var(--gray-light);
+    color: var(--gray);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .new-btn:hover { background: #e2e6ea; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    color: var(--gray);
+    font-size: 0.75rem;
+    padding: 20px 16px 32px;
+    line-height: 1.8;
+  }
+  footer a { color: var(--blue-light); text-decoration: none; font-weight: 600; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ─── CONTACT STRIP ─── */
+  .contact-strip {
+    background: linear-gradient(135deg, #0d1f35, #1a3a5c);
+    margin-top: 28px;
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .contact-strip .cs-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .contact-strip .cs-val {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .contact-strip .cs-val span { color: #7ec8f5; }
+  .cs-call-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .cs-call-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-inner">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Home &amp; Lab Sample Collection
+    </div>
+    <div class="logo-row">
+      <div class="logo-icon">🩸</div>
+      <div class="logo-text">
+        <h1><span>AD</span> Blood Collection</h1>
+        <p class="hero-sub">Basirhat, West Bengal</p>
+      </div>
+    </div>
+    <p class="hero-tagline">Book your blood test in seconds. Fill the form below and we'll confirm your appointment via WhatsApp.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">✔ Home Collection</span>
+      <span class="hero-chip">✔ Sterile &amp; Safe</span>
+      <span class="hero-chip">✔ Timely Reports</span>
+      <span class="hero-chip">✔ All Pathology Tests</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- FORM CARD -->
+  <div class="form-card">
+
+    <div class="sec-label">Patient Information</div>
+
+    <div class="form-two-col">
+      <div class="field">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="Enter patient's full name" autocomplete="off">
+        <div class="err" id="err-name">⚠ Please enter patient name.</div>
+      </div>
+
+      <div class="field">
+        <label>Age <span class="req">*</span></label>
+        <input type="number" id="age" placeholder="Age in years" min="1" max="120">
+        <div class="err" id="err-age">⚠ Please enter a valid age.</div>
+      </div>
+
+      <div class="field form-full">
+        <label>Gender <span class="req">*</span></label>
+        <div class="gender-row">
+          <button type="button" class="gender-btn" onclick="setGender('Male', this)">♂ Male</button>
+          <button type="button" class="gender-btn" onclick="setGender('Female', this)">♀ Female</button>
+          <button type="button" class="gender-btn" onclick="setGender('Other', this)">⚧ Other</button>
+        </div>
+        <div class="err" id="err-gender">⚠ Please select gender.</div>
+      </div>
+
+      <div class="field">
+        <label>Mobile Number <span class="req">*</span></label>
+        <input type="tel" id="mobile" placeholder="+91 XXXXX XXXXX" maxlength="15">
+        <div class="err" id="err-mobile">⚠ Please enter a valid mobile number.</div>
+      </div>
+
+      <div class="field">
+        <label>Address / Area</label>
+        <input type="text" id="address" placeholder="Your area or landmark">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- LOCATION -->
+    <div class="sec-label">Location (Optional)</div>
+    <div class="location-box" id="loc-box">
+      <div class="loc-icon" id="loc-icon">📍</div>
+      <div class="loc-text">
+        <p id="loc-title">Share Your Location</p>
+        <small id="loc-desc">Tap the button — your location will be sent automatically. Helps us reach you faster.</small>
+        <div id="loc-status"></div>
+      </div>
+      <button type="button" class="loc-btn" id="loc-btn" onclick="getLocation()">Share</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- TESTS -->
+    <div class="sec-label">Select Test(s) <span style="font-weight:400;color:var(--gray);text-transform:none;letter-spacing:0;font-size:0.75rem;">(choose one or more)</span></div>
+
+    <div class="tests-grid">
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="CBC (Complete Blood Count)">
+        <span class="chk-box"></span> CBC
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="Sugar F/PP">
+        <span class="chk-box"></span> Sugar F/PP
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="Lipid Profile">
+        <span class="chk-box"></span> Lipid Profile
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="Thyroid (T3/T4/TSH)">
+        <span class="chk-box"></span> Thyroid
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="LFT (Liver Function)">
+        <span class="chk-box"></span> LFT
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="RFT (Renal Function)">
+        <span class="chk-box"></span> RFT
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="Urine Test">
+        <span class="chk-box"></span> Urine Test
+      </div>
+      <div class="test-chip" onclick="toggleTest(this)">
+        <input type="checkbox" value="Stool Test">
+        <span class="chk-box"></span> Stool Test
+      </div>
+      <div class="test-chip full-row" onclick="toggleTest(this)">
+        <input type="checkbox" value="Others Pathology Tests">
+        <span class="chk-box"></span> Others Pathology Tests
+      </div>
+    </div>
+    <div class="err" id="err-test" style="margin-top:10px;">⚠ Please select at least one test.</div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button type="button" class="submit-btn" onclick="submitForm()">
+        <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Book Test &amp; Send via WhatsApp
+      </button>
+    </div>
+
+    <!-- INFO STRIP -->
+    <div class="info-strip">
+      <div class="info-item">
+        <div class="ii-icon">🏠</div>
+        <div class="ii-label">Service</div>
+        <div class="ii-val">Home Collection</div>
+      </div>
+      <div class="info-item">
+        <div class="ii-icon">🧪</div>
+        <div class="ii-label">Tests</div>
+        <div class="ii-val">All Pathology</div>
+      </div>
+      <div class="info-item">
+        <div class="ii-icon">📋</div>
+        <div class="ii-label">Report</div>
+        <div class="ii-val">On Time</div>
+      </div>
+    </div>
+
+    <!-- CONTACT STRIP -->
+    <div class="contact-strip">
+      <div>
+        <div class="cs-label">Service Provider</div>
+        <div class="cs-val">Sahib Hossain Sardar</div>
+        <div class="cs-val" style="font-size:0.8rem;color:rgba(255,255,255,0.6);font-weight:400;margin-top:2px;"><span>📍</span> Basirhat, West Bengal</div>
+      </div>
+      <a href="tel:+918900239931" class="cs-call-btn">
+        📞 Call Now
+      </a>
+    </div>
+
+  </div><!-- /form-card -->
+
+  <footer>
+    <div>Designed &amp; Developed by <a href="https://mmalam.in" target="_blank">mmalam.in</a></div>
+    <div style="margin-top:4px; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:#aab4c0;">AD Blood Collection Service &nbsp;·&nbsp; Basirhat, WB</div>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-check">✅</div>
+    <h2>All Set!</h2>
+    <p id="modal-msg">Your details are ready. Tap the button below to send your booking request directly to WhatsApp.</p>
+    <a class="wa-btn" id="wa-link" href="#" target="_blank">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;fill:#fff;">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Send Booking on WhatsApp
+    </a>
+    <button type="button" class="new-btn" onclick="resetForm()">+ Register Another Patient</button>
+  </div>
+</div>
+
+<script>
+  let selectedGender = '';
+  let locationData = null;
+
+  // ── Gender
+  function setGender(g, el) {
+    selectedGender = g;
+    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    hideErr('err-gender');
+  }
+
+  // ── Test toggle
+  function toggleTest(chip) {
+    chip.classList.toggle('selected');
+    const cb = chip.querySelector('input[type="checkbox"]');
+    if (cb) cb.checked = chip.classList.contains('selected');
+    hideErr('err-test');
+  }
+
+  // ── GPS Location
+  function getLocation() {
+    const btn    = document.getElementById('loc-btn');
+    const status = document.getElementById('loc-status');
+    const icon   = document.getElementById('loc-icon');
+    const title  = document.getElementById('loc-title');
+    const desc   = document.getElementById('loc-desc');
+    const box    = document.getElementById('loc-box');
+
+    if (!navigator.geolocation) {
+      status.textContent = '❌ Location not supported on this browser.';
+      status.className = 'fail';
+      return;
+    }
+    btn.textContent = '...';
+    btn.disabled = true;
+    status.textContent = 'Getting your location...';
+    status.className = '';
+
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        locationData = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        btn.textContent = '✓ Done';
+        btn.className = 'loc-btn got';
+        btn.disabled = true;
+        icon.textContent = '✅';
+        title.textContent = 'Location Captured!';
+        desc.textContent = 'Your location will be included in the booking message.';
+        status.textContent = '📍 Location saved successfully!';
+        status.className = 'ok';
+        box.style.borderColor = '#27ae60';
+        box.style.background = 'rgba(39,174,96,0.05)';
+      },
+      function(err) {
+        btn.textContent = 'Retry';
+        btn.disabled = false;
+        locationData = null;
+        status.textContent = err.code === 1
+          ? '⚠️ Please allow location permission in your browser and try again.'
+          : '⚠️ Could not get location. You can skip this.';
+        status.className = 'fail';
+      },
+      { timeout: 12000, enableHighAccuracy: true }
+    );
+  }
+
+  // ── Validation helpers
+  function showErr(id) { document.getElementById(id).classList.add('show'); }
+  function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+
+  // ── Submit
+  function submitForm() {
+    const name    = document.getElementById('name').value.trim();
+    const age     = document.getElementById('age').value.trim();
+    const mobile  = document.getElementById('mobile').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const tests   = [...document.querySelectorAll('.test-chip.selected input')].map(i => i.value);
+
+    let valid = true;
+    if (!name)   { showErr('err-name');   valid = false; } else hideErr('err-name');
+    if (!age || age < 1) { showErr('err-age'); valid = false; } else hideErr('err-age');
+    if (!selectedGender) { showErr('err-gender'); valid = false; } else hideErr('err-gender');
+    if (!mobile || mobile.replace(/\D/g,'').length < 10) { showErr('err-mobile'); valid = false; } else hideErr('err-mobile');
+    if (tests.length === 0) { showErr('err-test'); valid = false; } else hideErr('err-test');
+
+    if (!valid) {
+      const firstErr = document.querySelector('.err.show');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const testList = tests.map((t, i) => `  ${i + 1}. ${t}`).join('\n');
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    const timeStr = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+
+    const addrLine = address ? `\n🏘 *Address:* ${address}` : '';
+    const locLine  = locationData
+      ? `\n📍 *Location:* https://maps.google.com/?q=${locationData.lat},${locationData.lng}`
+      : '';
+
+    const msg =
+`🩸 *NEW TEST BOOKING*
+━━━━━━━━━━━━━━━━━━━━
+*AD Blood Collection Service*
+
+👤 *Patient:* ${name}
+🎂 *Age:* ${age} years
+⚧ *Gender:* ${selectedGender}
+📱 *Mobile:* ${mobile}${addrLine}${locLine}
+━━━━━━━━━━━━━━━━━━━━
+🧪 *Tests Required:*
+${testList}
+━━━━━━━━━━━━━━━━━━━━
+📅 *Date:* ${dateStr}
+⏰ *Time:* ${timeStr}
+━━━━━━━━━━━━━━━━━━━━
+_Sent via Patient Registration Portal_
+_mmalam.in_`;
+
+    const waURL = `https://wa.me/919907565361?text=${encodeURIComponent(msg)}`;
+    document.getElementById('modal-msg').textContent =
+      `"${name}" এর বুকিং তৈরি। নিচের বাটনে ক্লিক করে WhatsApp-এ পাঠান।`;
+    document.getElementById('wa-link').href = waURL;
+    document.getElementById('overlay').classList.add('show');
+  }
+
+  // ── Reset
+  function resetForm() {
+    ['name','age','mobile','address'].forEach(id => document.getElementById(id).value = '');
+    selectedGender = '';
+    locationData = null;
+    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.test-chip').forEach(c => {
+      c.classList.remove('selected');
+      const cb = c.querySelector('input'); if (cb) cb.checked = false;
+    });
+    ['err-name','err-age','err-gender','err-mobile','err-test'].forEach(hideErr);
+    const btn = document.getElementById('loc-btn');
+    btn.textContent = 'Share'; btn.className = 'loc-btn'; btn.disabled = false;
+    document.getElementById('loc-icon').textContent = '📍';
+    document.getElementById('loc-title').textContent = 'Share Your Location';
+    document.getElementById('loc-desc').textContent = 'Tap the button — your location will be sent automatically. Helps us reach you faster.';
+    document.getElementById('loc-status').textContent = '';
+    document.getElementById('loc-status').className = '';
+    const box = document.getElementById('loc-box');
+    box.style.borderColor = ''; box.style.background = '';
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+</script>
+
+</body>
+</html>
